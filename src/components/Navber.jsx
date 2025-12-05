@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 const Navber = () => {
   const authLink = (
@@ -15,16 +15,44 @@ const Navber = () => {
   const links = (
     <>
       <li>
-        <Link to={"/home"}>Home</Link>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
+          }
+          to={"/"}
+        >
+          Home
+        </NavLink>
       </li>
       <li>
-        <Link to={"/Products"}>Shop</Link>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
+          }
+          to={"/shop"}
+        >
+          Shop
+        </NavLink>
       </li>
       <li>
-        <Link to={"/about"}>About</Link>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
+          }
+          to={"/about"}
+        >
+          About
+        </NavLink>
       </li>
       <li>
-        <Link to={"/features"}>Features</Link>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
+          }
+          to={"/features"}
+        >
+          Features
+        </NavLink>
       </li>
     </>
   );
@@ -64,7 +92,7 @@ const Navber = () => {
         </label>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 text-xl">{links}</ul>
+        <ul className="menu-horizontal px-1  menu text-xl">{links}</ul>
       </div>
       <div className="navbar-center ml-16 lg:hidden">
         <Link to="/" className="text-xl lg:text-3xl font-semibold">
