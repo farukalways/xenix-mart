@@ -31,13 +31,47 @@ const Navber = () => {
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
-        <Link to="/" className="text-3xl font-semibold">
+        <Link
+          to="/"
+          className="hidden lg:flex text-2xl lg:text-3xl font-semibold"
+        >
           Xenix Mart
         </Link>
+
+        {/* search */}
+        <label className="inline-flex items-center gap-2 bg-base-100 px-3 w-full max-w-48 h-10 rounded-lg border-2 border-white shadow-none lg:hidden">
+          <svg
+            className="h-[1.3em] opacity-50"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </g>
+          </svg>
+          <input
+            type="search"
+            className="w-full  h-full bg-transparent border-none outline-none focus:outline-none"
+            placeholder="Search"
+          />
+        </label>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-xl">{links}</ul>
       </div>
+      <div className="navbar-center ml-16 lg:hidden">
+        <Link to="/" className="text-xl lg:text-3xl font-semibold">
+          Xenix Mart
+        </Link>
+      </div>
+
       <div className="navbar-end ">
         <div className="dropdown dropdown-end ">
           <div tabIndex={0} role="button" className=" m-1 lg:hidden">
@@ -67,7 +101,7 @@ const Navber = () => {
           </ul>
         </div>
 
-        <ul className=" menu-horizontal px-1 gap-7 hidden text-xl lg:flex">
+        <ul className=" menu-horizontal px-1 gap-7 hidden text-sm lg:flex">
           {" "}
           {authLink}
         </ul>
