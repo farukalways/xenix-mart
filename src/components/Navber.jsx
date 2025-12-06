@@ -12,56 +12,18 @@ const Navber = () => {
     </>
   );
 
-  const links = (
-    <>
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
-          }
-          to={"/"}
-        >
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
-          }
-          to={"/shop"}
-        >
-          Shop
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
-          }
-          to={"/about"}
-        >
-          About
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "bg-blue-500 text-white px-4 py-2 rounded" : ""
-          }
-          to={"/features"}
-        >
-          Features
-        </NavLink>
-      </li>
-    </>
-  );
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/shop", label: "Shop" },
+    { to: "/about", label: "About" },
+    { to: "/features", label: "Features" },
+  ];
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-[#ffffff] shadow-sm">
       <div className="navbar-start">
         <Link
           to="/"
-          className="hidden lg:flex text-2xl lg:text-3xl font-semibold"
+          className="hidden lg:flex text-2xl lg:text-3xl font-semibold text-[#000000]"
         >
           Xenix Mart
         </Link>
@@ -92,7 +54,22 @@ const Navber = () => {
         </label>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu-horizontal px-1  menu text-xl">{links}</ul>
+        <ul className="menu-horizontal px-1 gap-3 menu text-xl relative">
+          {navLinks.map((link) => (
+            <li key={link.to}>
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  `btn-slide p-2 rounded text-[#000000] hover:text-gray-700 ${
+                    isActive ? "w-full border-b-2 border-b-[#000000]" : ""
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="navbar-center ml-16 lg:hidden">
         <Link to="/" className="text-xl lg:text-3xl font-semibold">
@@ -122,14 +99,27 @@ const Navber = () => {
 
           <ul
             tabIndex="-1"
-            className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm text-xl"
+            className="dropdown-content menu relative bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm text-xl"
           >
-            {links}
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `btn-slide px-4 py-2 rounded text-black hover:text-gray-700 ${
+                      isActive ? "border-b-2 border-b-black" : ""
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
             {authLink}
           </ul>
         </div>
 
-        <ul className=" menu-horizontal px-1 gap-7 hidden text-sm lg:flex">
+        <ul className=" menu-horizontal px-1 gap-7 hidden text-sm lg:flex text-[#000000]">
           {" "}
           {authLink}
         </ul>

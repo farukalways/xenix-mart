@@ -1,2 +1,25 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+.btn-slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1.5px;
+  width: 100%;
+  background: #000000;
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.btn-slide:hover::after {
+  transform: scaleX(1);
+}
+
+.btn-slide:not(:hover)::after {
+  transform-origin: right;
+  transform: scaleX(0);
+}

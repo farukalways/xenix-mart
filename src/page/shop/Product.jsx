@@ -23,7 +23,7 @@ const Product = ({ product }) => {
         </div>
 
         <div>
-          <button className="border-gray-900 border-b-2 text-sm  ">
+          <button className="relative btn-slide  text-sm  ">
             CHOOSE OPTION
           </button>
         </div>
