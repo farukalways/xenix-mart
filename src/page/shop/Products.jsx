@@ -1,48 +1,43 @@
-// https://dummyjson.com/products
-
 import { useEffect, useState } from "react";
 import Product from "./Product";
 import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
+import Pagination from "../../components/Pagination";
+import { fetchProducts } from "../../utils/fetchProducts";
 
-const Products = () => {
+const Products = ({ onSelectedCategory }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [totleProductsCount, setTotleProductsCount] = useState(0);
   const [error, setError] = useState(null);
   const limit = 15;
+  const totalPages = Math.ceil(totleProductsCount / limit);
 
   useEffect(() => {
     let ignore = false;
 
-    const fetchProducts = async () => {
+    const loadData = async () => {
       try {
-        const skip = (page - 1) * limit;
-        const response = await fetch(
-          `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
+        const data = await fetchProducts({
+          category: onSelectedCategory,
+          page,
+          limit,
+        });
 
         if (!ignore) {
-          setProducts(result.products);
-          setError(null); // clear previous error
+          setProducts(data.products);
+          setTotleProductsCount(data.total);
         }
       } catch (err) {
-        if (!ignore) setError(err.message);
+        setError(err.message);
       }
     };
 
-    fetchProducts();
+    loadData();
 
     return () => {
       ignore = true;
     };
-  }, [page, setError]);
-
-  console.log(error);
+  }, [page, setError, onSelectedCategory]);
 
   return (
     <section>
@@ -64,25 +59,7 @@ const Products = () => {
               <Product key={product.id} product={product} />
             ))}
           </div>
-          {products.length > 0 && (
-            <div className="pt-8 pb-3 flex items-center justify-center gap-5">
-              <button
-                onClick={() => setPage((prev) => prev - 1)}
-                className="px-4 py-2 text-[#000000] rounded"
-              >
-                Prev
-              </button>
-              <button className="px-4 py-2 text-[#000000] rounded">
-                {page}
-              </button>
-              <button
-                onClick={() => setPage((prev) => prev + 1)}
-                className="px-4 py-2 text-[#000000] rounded"
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </section>
