@@ -24,3 +24,23 @@ export const AllCategory = [
   "womens-shoes",
   "womens-watches",
 ];
+
+export const sortingOptions = [
+  "Best Selling",
+  "Alphabetically A→Z",
+  "Alphabetically Z→A",
+  "Price Low→High",
+  "Price High→Low",
+  "Date Old→New",
+  "Date New→Old",
+];
+
+// export const sortMap = {
+//   "Best Selling": { sortBy: "rating", order: "desc" },
+//   "Alphabetically A→Z": { sortBy: "title", order: "asc" },
+//   "Alphabetically Z→A": { sortBy: "title", order: "desc" },
+//   "Price Low→High": { sortBy: "price", order: "asc" },
+//   "Price High→Low": { sortBy: "price", order: "desc" },
+//   "Date Old→New": { sortBy: "createdAt", order: "asc" },
+//   "Date New→Old": { sortBy: "createdAt", order: "desc" },
+// };

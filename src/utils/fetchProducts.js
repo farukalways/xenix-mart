@@ -1,5 +1,3 @@
-// src/utils/fetchProducts.js
-
 export const fetchProducts = async ({ category, page, limit }) => {
   let url = "";
   let isCategory = false;
