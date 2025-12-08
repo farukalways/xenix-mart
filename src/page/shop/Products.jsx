@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Product from "./Product";
 import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
 import Pagination from "../../components/Pagination";
-import { fetchProducts } from "../../utils/fetchProducts";
+import { fetchProducts } from "./../../utils/fetchProducts";
+import { processProducts } from "../../utils/processProducts";
 
-const Products = ({ onSelectedCategory }) => {
+const Products = ({ onSelectedCategory, selectedSortOption }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totleProductsCount, setTotleProductsCount] = useState(0);
@@ -12,23 +13,37 @@ const Products = ({ onSelectedCategory }) => {
   const limit = 15;
   const totalPages = Math.ceil(totleProductsCount / limit);
 
+  // const handleClearFilters = () => {
+  //   onSelectedCategory(null);
+  //   onSelectedSortOption(null);
+  //   setPage(1);
+  // };
+
   useEffect(() => {
     let ignore = false;
 
     const loadData = async () => {
       try {
-        const data = await fetchProducts({
+        const allProduct = await fetchProducts(
+          "https://dummyjson.com/products?limit=0"
+        );
+
+        const paginatedProducts = processProducts({
+          products: allProduct,
           category: onSelectedCategory,
+          sortOption: selectedSortOption,
           page,
           limit,
         });
 
         if (!ignore) {
-          setProducts(data.products);
-          setTotleProductsCount(data.total);
+          setProducts(paginatedProducts);
+          setTotleProductsCount(paginatedProducts.length);
         }
       } catch (err) {
-        setError(err.message);
+        if (!ignore) {
+          setError(err.message);
+        }
       }
     };
 
@@ -37,7 +52,7 @@ const Products = ({ onSelectedCategory }) => {
     return () => {
       ignore = true;
     };
-  }, [page, setError, onSelectedCategory]);
+  }, [page, onSelectedCategory, selectedSortOption]);
 
   return (
     <section>

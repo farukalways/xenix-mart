@@ -35,12 +35,12 @@ export const sortingOptions = [
   "Date New→Old",
 ];
 
-// export const sortMap = {
-//   "Best Selling": { sortBy: "rating", order: "desc" },
-//   "Alphabetically A→Z": { sortBy: "title", order: "asc" },
-//   "Alphabetically Z→A": { sortBy: "title", order: "desc" },
-//   "Price Low→High": { sortBy: "price", order: "asc" },
-//   "Price High→Low": { sortBy: "price", order: "desc" },
-//   "Date Old→New": { sortBy: "createdAt", order: "asc" },
-//   "Date New→Old": { sortBy: "createdAt", order: "desc" },
-// };
+export const sortMap = {
+  "Best Selling": { field: "rating", order: "desc" },
+  "Alphabetically A→Z": { field: "title", order: "asc" },
+  "Alphabetically Z→A": { field: "title", order: "desc" },
+  "Price Low→High": { field: "price", order: "asc" },
+  "Price High→Low": { field: "price", order: "desc" },
+  "Date Old→New": { field: "id", order: "asc" }, // Assuming id as date proxy
+  "Date New→Old": { field: "id", order: "desc" },
+};
