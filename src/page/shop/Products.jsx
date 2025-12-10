@@ -25,7 +25,7 @@ const Products = ({ onSelectedCategory, selectedSortOption }) => {
     const loadData = async () => {
       try {
         const allProduct = await fetchProducts(
-          "https://dummyjson.com/products?limit=0"
+          "http://localhost:3000/products"
         );
 
         const paginatedProducts = processProducts({
@@ -37,8 +37,15 @@ const Products = ({ onSelectedCategory, selectedSortOption }) => {
         });
 
         if (!ignore) {
-          setProducts(paginatedProducts);
-          setTotleProductsCount(paginatedProducts.length);
+          if (paginatedProducts.length === 0) {
+            setProducts([]);
+            setError("No data available");
+            setTotleProductsCount(0);
+          } else {
+            setProducts(paginatedProducts);
+            setTotleProductsCount(paginatedProducts.length);
+            setError(null);
+          }
         }
       } catch (err) {
         if (!ignore) {

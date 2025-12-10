@@ -4,10 +4,10 @@ const Navber = () => {
   const authLink = (
     <>
       <li>
-        <Link>Sign in</Link>
+        <Link to={"/login"}>Sign in</Link>
       </li>
       <li>
-        <Link>Create account</Link>
+        <Link to={"/register"}>Create account</Link>
       </li>
     </>
   );

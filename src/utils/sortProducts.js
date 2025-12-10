@@ -9,7 +9,6 @@ export const sortProducts = (products, selectedSortOption) => {
     let valA = a[field];
     let valB = b[field];
 
-    // যদি string হয়
     if (typeof valA === "string") {
       valA = valA.toLowerCase();
       valB = valB.toLowerCase();
