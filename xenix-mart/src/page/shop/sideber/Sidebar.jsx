@@ -1,3 +1,4 @@
+import { IoMdClose } from "react-icons/io";
 import Categories from "./Categories";
 import Filtered from "./Filtered";
 
@@ -7,9 +8,29 @@ const Sidebar = ({
   selectedCategory,
   selectedSortOption,
   onClearFilters,
+  showFilterBer,
+  setShowFilterBer,
 }) => {
   return (
-    <aside className="hidden md:block md:w-1/5 bg-white p-4 sticky top-0 h-screen">
+    <aside
+      className={`
+    bg-white p-4 h-screen
+    fixed inset-0 z-50
+    ${showFilterBer ? "block w-3/5 " : "hidden"}
+    md:static md:block md:z-auto md:w-1/5 md:h-auto
+  `}
+    >
+      {showFilterBer && (
+        <div className="flex justify-end">
+          <button
+            className="px-3 py-2"
+            onClick={() => setShowFilterBer(!showFilterBer)}
+          >
+            <IoMdClose className="text-xl text-red-500" />
+          </button>
+        </div>
+      )}
+
       <Categories onSelectedCategory={onSelectedCategory} />
       <Filtered onSelectedSortOption={onSelectedSortOption} />
 

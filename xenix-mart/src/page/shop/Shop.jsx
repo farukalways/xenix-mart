@@ -5,15 +5,19 @@ import Sidebar from "./sideber/Sidebar";
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSortOption, setSelectedSortOption] = useState(null);
+  const [showFilterBer, setShowFilterBer] = useState(false);
 
   return (
     <section className="flex min-h-screen">
       {/* Sidebar */}
+
       <Sidebar
         onSelectedCategory={setSelectedCategory}
         onSelectedSortOption={setSelectedSortOption}
         selectedCategory={selectedCategory}
         selectedSortOption={selectedSortOption}
+        showFilterBer={showFilterBer}
+        setShowFilterBer={setShowFilterBer}
       />
 
       {/* Main Content */}
@@ -22,6 +26,8 @@ const Shop = () => {
           onSelectedCategory={selectedCategory}
           selectedSortOption={selectedSortOption}
           onSelectedSortOption={setSelectedSortOption}
+          setShowFilterBer={setShowFilterBer}
+          showFilterBer={showFilterBer}
         />
       </main>
     </section>

@@ -5,7 +5,12 @@ import Pagination from "../../components/Pagination";
 import { fetchProducts } from "./../../utils/fetchProducts";
 import { processProducts } from "../../utils/processProducts";
 
-const Products = ({ onSelectedCategory, selectedSortOption }) => {
+const Products = ({
+  onSelectedCategory,
+  selectedSortOption,
+  setShowFilterBer,
+  showFilterBer,
+}) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totleProductsCount, setTotleProductsCount] = useState(0);
@@ -75,7 +80,12 @@ const Products = ({ onSelectedCategory, selectedSortOption }) => {
         </div>
       ) : (
         <>
-          {" "}
+          <p
+            onClick={() => setShowFilterBer(!showFilterBer)}
+            className="w-full text-[#000000] cursor-pointer px-2 py-3 mb-3 text-xl font-semibold "
+          >
+            Filterd
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {products.map((product) => (
               <Product key={product.id} product={product} />

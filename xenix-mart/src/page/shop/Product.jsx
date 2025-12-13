@@ -4,11 +4,11 @@ const Product = ({ product }) => {
   const dolerTotk = Math.round(120 * Number(price));
   return (
     <div className="card p-0  text-[#000000] w-auto shadow-sm flex flex-col items-center">
-      <figure className="bg-[#E8E7EC] rounded-xl flex justify-center items-center w-56 h-48">
+      <figure className="bg-[#E8E7EC] rounded-xl flex justify-center items-center max-w-56 max-h-48">
         <img
           src={thumbnail}
           alt={title}
-          className="block w-auto h-auto max-w-full max-h-full object-contain"
+          className="block w-auto h-auto object-contain"
         />
       </figure>
 

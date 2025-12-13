@@ -72,14 +72,17 @@ const Navber = () => {
         </ul>
       </div>
       <div className="navbar-center ml-16 lg:hidden">
-        <Link to="/" className="text-xl lg:text-3xl font-semibold">
+        <Link
+          to="/"
+          className="text-xl text-[#000000] lg:text-3xl font-semibold"
+        >
           Xenix Mart
         </Link>
       </div>
 
-      <div className="navbar-end ">
-        <div className="dropdown dropdown-end ">
-          <div tabIndex={0} role="button" className=" m-1 lg:hidden">
+      <div className="navbar-end">
+        <div className="dropdown dropdown-end lg:hidden">
+          <div tabIndex={0} role="button" className="text-[#000000] m-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -87,27 +90,26 @@ const Navber = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
 
           <ul
-            tabIndex="-1"
-            className="dropdown-content menu relative bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm text-xl"
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow text-xl"
           >
             {navLinks.map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
                   className={({ isActive }) =>
-                    `btn-slide px-4 py-2 rounded text-black hover:text-gray-700 ${
-                      isActive ? "border-b-2 border-b-black" : ""
+                    `px-4 py-2 text-black ${
+                      isActive ? "border-b-2 border-black" : ""
                     }`
                   }
                 >
@@ -119,8 +121,7 @@ const Navber = () => {
           </ul>
         </div>
 
-        <ul className=" menu-horizontal px-1 gap-7 hidden text-sm lg:flex text-[#000000]">
-          {" "}
+        <ul className="menu-horizontal px-1 gap-7 hidden text-sm lg:flex text-black">
           {authLink}
         </ul>
       </div>
