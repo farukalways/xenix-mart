@@ -4,14 +4,19 @@ import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
 import Pagination from "../../components/Pagination";
 import { fetchProducts } from "./../../utils/fetchProducts";
 import { processProducts } from "../../utils/processProducts";
+// import ProductModal from "../../components/ProductModal";
+import ProductDetails from "./ProductDetails";
 
 const Products = ({
   onSelectedCategory,
   selectedSortOption,
   setShowFilterBer,
   showFilterBer,
+  onSelectedProduct,
+  selectedProduct,
 }) => {
   const [products, setProducts] = useState([]);
+
   const [page, setPage] = useState(1);
   const [totleProductsCount, setTotleProductsCount] = useState(0);
   const [error, setError] = useState(null);
@@ -68,7 +73,12 @@ const Products = ({
 
   return (
     <section>
-      {error ? (
+      {selectedProduct ? (
+        <ProductDetails
+          selectedProduct={selectedProduct}
+          onSelectedProduct={onSelectedProduct}
+        />
+      ) : error ? (
         <p className="text-xl text-red-500 w-full min-h-72 flex items-center justify-center">
           {error}
         </p>
@@ -82,13 +92,18 @@ const Products = ({
         <>
           <p
             onClick={() => setShowFilterBer(!showFilterBer)}
-            className="w-full text-[#000000] cursor-pointer px-2 py-3 mb-3 text-xl font-semibold "
+            className="w-full md:hidden text-[#000000] cursor-pointer px-2 py-3 mb-3 text-xl font-semibold "
           >
             Filterd
           </p>
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {products.map((product) => (
-              <Product key={product.id} product={product} />
+              <Product
+                onOpen={() => onSelectedProduct(product)}
+                key={product.id}
+                product={product}
+              />
             ))}
           </div>
           <Pagination page={page} setPage={setPage} totalPages={totalPages} />

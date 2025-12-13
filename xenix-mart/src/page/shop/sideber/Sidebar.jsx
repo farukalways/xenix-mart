@@ -10,14 +10,21 @@ const Sidebar = ({
   onClearFilters,
   showFilterBer,
   setShowFilterBer,
+  selectedProduct,
 }) => {
   return (
     <aside
       className={`
+     
     bg-white p-4 h-screen
     fixed inset-0 z-50
     ${showFilterBer ? "block w-3/5 " : "hidden"}
-    md:static md:block md:z-auto md:w-1/5 md:h-auto
+    ${
+      selectedProduct
+        ? "hidden"
+        : "md:static md:block md:z-auto md:w-1/5 md:h-auto"
+    }
+    
   `}
     >
       {showFilterBer && (
