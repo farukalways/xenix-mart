@@ -17,6 +17,7 @@ const Navber = () => {
     { to: "/shop", label: "Shop" },
     { to: "/about", label: "About" },
     { to: "/features", label: "Features" },
+    { to: "/productAdd", label: "Add Product" },
   ];
   return (
     <div className="navbar bg-[#ffffff] shadow-sm">
