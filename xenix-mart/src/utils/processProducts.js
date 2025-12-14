@@ -1,20 +1,23 @@
 import { sortProducts } from "./sortProducts";
-
 export const processProducts = ({
-  products,
+  products = [],
   category,
   sortOption,
-  page,
-  limit,
+  page = 1,
+  limit = 10,
 }) => {
+  console.log(category);
   let filtered = products;
 
-  if (category) {
-    filtered = filtered.filter((item) => item.category === category);
+  if (category && typeof category === "string") {
+    filtered = filtered.filter(
+      (item) =>
+        item.category?.toLowerCase().trim() === category.toLowerCase().trim()
+    );
   }
 
   const sorted =
-    sortOption && sortOption.trim() !== null
+    sortOption && sortOption.trim() !== ""
       ? sortProducts(filtered, sortOption)
       : filtered;
 

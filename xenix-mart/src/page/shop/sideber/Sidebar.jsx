@@ -1,17 +1,20 @@
 import { IoMdClose } from "react-icons/io";
 import Categories from "./Categories";
 import Filtered from "./Filtered";
+import useProduct from "../../../hooks/useProduct";
 
-const Sidebar = ({
-  onSelectedCategory,
-  onSelectedSortOption,
-  selectedCategory,
-  selectedSortOption,
-  onClearFilters,
-  showFilterBer,
-  setShowFilterBer,
-  selectedProduct,
-}) => {
+const Sidebar = () => {
+  const {
+    selectedCategory,
+    selectedSortOption,
+    setSelectedCategory,
+    setSelectedSortOption,
+    showFilterBer,
+    setShowFilterBer,
+    selectedProduct,
+    handleClearFilters,
+  } = useProduct();
+
   return (
     <aside
       className={`
@@ -38,12 +41,15 @@ const Sidebar = ({
         </div>
       )}
 
-      <Categories onSelectedCategory={onSelectedCategory} />
-      <Filtered onSelectedSortOption={onSelectedSortOption} />
+      <Categories onSelectedCategory={setSelectedCategory} />
+      <Filtered onSelectedSortOption={setSelectedSortOption} />
 
       {(selectedCategory || selectedSortOption) && (
         <div className="text-right mt-3">
-          <button onClick={onClearFilters} className="text-sm text-gray-600">
+          <button
+            onClick={handleClearFilters}
+            className="text-sm text-gray-600"
+          >
             Clear
           </button>
         </div>

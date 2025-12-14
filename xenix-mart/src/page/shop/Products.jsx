@@ -1,82 +1,29 @@
-import { useEffect, useState } from "react";
 import Product from "./Product";
 import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
 import Pagination from "../../components/Pagination";
-import { fetchProducts } from "./../../utils/fetchProducts";
-import { processProducts } from "../../utils/processProducts";
-// import ProductModal from "../../components/ProductModal";
+
 import ProductDetails from "./ProductDetails";
+import useProduct from "../../hooks/useProduct";
 
-const Products = ({
-  onSelectedCategory,
-  selectedSortOption,
-  setShowFilterBer,
-  showFilterBer,
-  onSelectedProduct,
-  selectedProduct,
-}) => {
-  const [products, setProducts] = useState([]);
-
-  const [page, setPage] = useState(1);
-  const [totleProductsCount, setTotleProductsCount] = useState(0);
-  const [error, setError] = useState(null);
-  const limit = 15;
-  const totalPages = Math.ceil(totleProductsCount / limit);
-
-  // const handleClearFilters = () => {
-  //   onSelectedCategory(null);
-  //   onSelectedSortOption(null);
-  //   setPage(1);
-  // };
-
-  useEffect(() => {
-    let ignore = false;
-
-    const loadData = async () => {
-      try {
-        const allProduct = await fetchProducts(
-          "http://localhost:3000/products"
-        );
-
-        const paginatedProducts = processProducts({
-          products: allProduct,
-          category: onSelectedCategory,
-          sortOption: selectedSortOption,
-          page,
-          limit,
-        });
-
-        if (!ignore) {
-          if (paginatedProducts.length === 0) {
-            setProducts([]);
-            setError("No data available");
-            setTotleProductsCount(0);
-          } else {
-            setProducts(paginatedProducts);
-            setTotleProductsCount(paginatedProducts.length);
-            setError(null);
-          }
-        }
-      } catch (err) {
-        if (!ignore) {
-          setError(err.message);
-        }
-      }
-    };
-
-    loadData();
-
-    return () => {
-      ignore = true;
-    };
-  }, [page, onSelectedCategory, selectedSortOption]);
+const Products = () => {
+  const {
+    showFilterBer,
+    setShowFilterBer,
+    selectedProduct,
+    setSelectedProduct,
+    error,
+    products,
+    setPage,
+    page,
+    totalPages,
+  } = useProduct();
 
   return (
     <section>
       {selectedProduct ? (
         <ProductDetails
           selectedProduct={selectedProduct}
-          onSelectedProduct={onSelectedProduct}
+          onSelectedProduct={setSelectedProduct}
         />
       ) : error ? (
         <p className="text-xl text-red-500 w-full min-h-72 flex items-center justify-center">
@@ -100,12 +47,13 @@ const Products = ({
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {products.map((product) => (
               <Product
-                onOpen={() => onSelectedProduct(product)}
+                onOpen={() => setSelectedProduct(product)}
                 key={product.id}
                 product={product}
               />
             ))}
           </div>
+
           <Pagination page={page} setPage={setPage} totalPages={totalPages} />
         </>
       )}
