@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import FormInput from "../components/FormInput ";
+import useAuth from "./../hooks/useAuth";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Registration = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { createUser } = useAuth();
 
   // handle input change (ONE function)
   const handleChange = (e) => {
@@ -56,6 +58,7 @@ const Registration = () => {
 
     // data to send server
     const payload = {
+      id: crypto.randomUUID(),
       name: formData.name,
       email: formData.email,
       password: formData.password,
@@ -63,7 +66,12 @@ const Registration = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/register", {
+      const result = await createUser(formData.email, formData.password);
+      if (result.user) {
+        alert("Registration successful!");
+      }
+
+      const res = await fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +86,6 @@ const Registration = () => {
         return;
       }
 
-      alert("Registration successful!");
       navigate("/login");
     } catch (error) {
       console.error(error);

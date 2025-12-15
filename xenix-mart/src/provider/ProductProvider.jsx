@@ -15,6 +15,8 @@ const ProductProvider = ({ children }) => {
   const limit = 15;
   const totalPages = Math.ceil(totleProductsCount / limit);
 
+  console.log(totalPages);
+
   useEffect(() => {
     let ignore = false;
 
@@ -22,29 +24,30 @@ const ProductProvider = ({ children }) => {
       try {
         const allProduct = await fetchData("http://localhost:3000/products");
 
+        //filter first
+        const filteredProducts = selectedCategory
+          ? allProduct.filter(
+              (item) =>
+                item.category?.toLowerCase().trim() ===
+                selectedCategory.toLowerCase().trim()
+            )
+          : allProduct;
+
+        // sort + paginate
         const paginatedProducts = processProducts({
-          products: allProduct,
-          category: selectedCategory,
+          products: filteredProducts,
           sortOption: selectedSortOption,
           page,
           limit,
         });
 
         if (!ignore) {
-          if (paginatedProducts.length === 0) {
-            setProducts([]);
-            setError("No data available");
-            setTotleProductsCount(0);
-          } else {
-            setProducts(paginatedProducts);
-            setTotleProductsCount(paginatedProducts.length);
-            setError(null);
-          }
+          setProducts(paginatedProducts);
+          setTotleProductsCount(filteredProducts.length);
+          setError(filteredProducts.length === 0 ? "No data available" : null);
         }
       } catch (err) {
-        if (!ignore) {
-          setError(err.message);
-        }
+        if (!ignore) setError(err.message);
       }
     };
 

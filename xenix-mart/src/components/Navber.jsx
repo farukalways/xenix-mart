@@ -1,13 +1,20 @@
 import { Link, NavLink } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 const Navber = () => {
-  const authLink = (
+  const { user, logOut } = useAuth();
+
+  const authLink = user ? (
+    <button className="px-5 btn" onClick={logOut}>
+      LogOut
+    </button>
+  ) : (
     <>
       <li>
-        <Link to={"/login"}>Sign in</Link>
+        <Link to="/login">Sign in</Link>
       </li>
       <li>
-        <Link to={"/register"}>Create account</Link>
+        <Link to="/register">Create account</Link>
       </li>
     </>
   );

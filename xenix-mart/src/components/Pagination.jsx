@@ -1,6 +1,6 @@
 const Pagination = ({ page, setPage, totalPages }) => {
   return (
-    <div className="pt-8 pb-3 flex items-center justify-center gap-5">
+    <div className="pt-8 pb-3 flex items-center justify-center gap-5 text-[#000000]">
       {page > 1 && (
         <button
           onClick={() => setPage((prev) => prev - 1)}

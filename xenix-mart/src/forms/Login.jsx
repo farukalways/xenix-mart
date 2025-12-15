@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,10 +10,11 @@ const Login = () => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const { signIn } = useAuth();
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let hasError = false;
@@ -31,10 +33,15 @@ const Login = () => {
       hasError = true;
     }
 
-    if (!hasError) {
-      navigate("/");
+    if (hasError) return;
 
-      alert("Login successfully!");
+    try {
+      await signIn(email, password);
+      alert("Login successful!");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert(error.message || "Login failed!");
     }
   };
 

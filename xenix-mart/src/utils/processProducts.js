@@ -6,10 +6,9 @@ export const processProducts = ({
   page = 1,
   limit = 10,
 }) => {
-  console.log(category);
   let filtered = products;
 
-  if (category && typeof category === "string") {
+  if (category) {
     filtered = filtered.filter(
       (item) =>
         item.category?.toLowerCase().trim() === category.toLowerCase().trim()
