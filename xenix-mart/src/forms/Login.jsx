@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -94,6 +94,13 @@ const Login = () => {
         >
           Login
         </button>
+
+        <p className="text-lg mt-3">
+          Don’t have an account?{" "}
+          <Link to="/register" className="font-semibold">
+            Sign up
+          </Link>
+        </p>
       </form>
     </div>
   );

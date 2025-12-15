@@ -23,8 +23,6 @@ const ProductAddForm = () => {
 
   // 🔹 input change handler
   const handleChange = (e) => {
-    console.log(e.target);
-
     const { name, value } = e.target;
 
     setFormData({

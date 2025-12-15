@@ -1,235 +1,195 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import FormInput from "../components/FormInput ";
 
 const Registration = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("");
+  const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    userType: "",
+  });
+
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Error states
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [userTypeError, setUserTypeError] = useState("");
+  // handle input change (ONE function)
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const navigate = useNavigate();
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-  const handleSubmit = (e) => {
+    // clear error
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Reset all errors
-    setNameError("");
-    setEmailError("");
-    setPasswordError("");
-    setConfirmPasswordError("");
-    setUserTypeError("");
+    const newErrors = {};
 
-    let hasError = false;
+    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.email) newErrors.email = "Email is required";
 
-    // Name validation
-    if (!name) {
-      setNameError("Name is required!");
-      hasError = true;
+    if (!formData.password) newErrors.password = "Password is required";
+
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+
+    if (!formData.userType) newErrors.userType = "Please select user type";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    // Email validation
-    if (!email) {
-      setEmailError("Email is required!");
-      hasError = true;
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setEmailError("Invalid email format!");
-      hasError = true;
-    }
+    // data to send server
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      role: formData.userType,
+    };
 
-    // Password validation
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{6,}$/;
+    try {
+      const res = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    const passwordRegex = /^(?=.*[a-z])/;
+      const data = await res.json();
 
-    if (!password) {
-      setPasswordError("Password is required!");
-      hasError = true;
-    } else if (!passwordRegex.test(password)) {
-      setPasswordError(
-        "Password must have at least 1 lowercase, 1 uppercase, 1 number, 1 special character and minimum 6 characters!"
-      );
-      hasError = true;
-    }
-
-    // Confirm password
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please confirm your password!");
-      hasError = true;
-    } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Passwords do not match!");
-      hasError = true;
-    }
-
-    // User type
-    if (!userType) {
-      setUserTypeError("Please select your user type!");
-      hasError = true;
-    }
-
-    // If no error, handle successful registration
-    if (!hasError) {
-      // Example: check if user is seller
-      if (userType === "seller") {
-        alert("Seller registration successful! You can now add products.");
-      } else {
-        alert("Buyer/Normal user registration successful!");
+      if (!res.ok) {
+        alert(data.message || "Registration failed");
+        return;
       }
 
-      // Form data object
-      const formData = {
-        name: name,
-        email: email,
-        password: password,
-        userType: userType,
-      };
-
-      console.log("Form Data to send to DB:", formData);
-
-      // Example: POST request to backend
-      // fetch("/api/register", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // })
-      //   .then(res => res.json())
-      //   .then(data => console.log("Server response:", data))
-      //   .catch(err => console.error("Error:", err));
-
       alert("Registration successful!");
-
-      // Navigate to home page or login page
-      navigate("/");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert("Server error!");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md p-6 rounded-xl shadow-lg backdrop-blur-md bg-white/30 dark:bg-black/30 border border-white/20 dark:border-black/20"
+        className="w-full max-w-md bg-[#434E78] p-6 rounded shadow"
       >
-        <legend className="text-center text-2xl font-bold mb-4">
-          Register
-        </legend>
+        <h2 className="text-2xl font-bold text-center mb-4">Register</h2>
 
         {/* Name */}
-        <label className="block my-2">Name</label>
-        <input
-          type="text"
-          placeholder="Your Name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (nameError) setNameError("");
-          }}
-          className="w-full p-3 rounded-md bg-transparent border outline-none placeholder-gray-400 text-gray-900 dark:text-gray-100 mb-1"
+        <FormInput
+          label="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Your name"
         />
-        {nameError && <p className="text-red-500 text-sm my-1">{nameError}</p>}
+        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
         {/* Email */}
-        <label className="block my-2">Email</label>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (emailError) setEmailError("");
-          }}
-          className="w-full p-3 rounded-md bg-transparent border outline-none placeholder-gray-400 text-gray-900 dark:text-gray-100 mb-1"
+        <FormInput
+          label="Email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email address"
         />
-        {emailError && (
-          <p className="text-red-500 text-sm my-1">{emailError}</p>
-        )}
+        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
         {/* Password */}
-        <label className="block my-2">Password</label>
+        <label className="block mt-3 mb-1">Password</label>
         <div className="relative">
-          <input
+          <FormInput
+            name="password"
             type={showPassword ? "text" : "password"}
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (passwordError) setPasswordError("");
-            }}
-            className="w-full p-3 rounded-md bg-transparent border outline-none placeholder-gray-400 text-gray-900 dark:text-gray-100"
           />
-          {password && (
+          {formData.password && (
             <span
-              className="absolute right-3 top-3 cursor-pointer text-gray-600 dark:text-gray-300"
+              className="absolute right-3 top-3 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           )}
         </div>
-        {passwordError && (
-          <p className="text-red-500 text-sm my-1">{passwordError}</p>
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password}</p>
         )}
 
         {/* Confirm Password */}
-        <label className="block my-2">Confirm Password</label>
+        <label className="block mt-3 mb-1">Confirm Password</label>
         <div className="relative">
-          <input
+          <FormInput
+            name="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              if (confirmPasswordError) setConfirmPasswordError("");
-            }}
-            className="w-full p-3 rounded-md bg-transparent border outline-none placeholder-gray-400 text-gray-900 dark:text-gray-100"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm password"
           />
-          {confirmPassword && (
+          {formData.confirmPassword && (
             <span
-              className="absolute right-3 top-3 cursor-pointer text-gray-600 dark:text-gray-300"
+              className="absolute right-3 top-3 cursor-pointer"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           )}
         </div>
-        {confirmPasswordError && (
-          <p className="text-red-500 text-sm my-1">{confirmPasswordError}</p>
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
         )}
 
-        {/* User type */}
-        <label className="block my-2">User Type</label>
+        {/* User Type */}
+        <label className="block mt-3 mb-1">User Type</label>
         <select
-          value={userType}
-          onChange={(e) => {
-            setUserType(e.target.value);
-            if (userTypeError) setUserTypeError("");
-          }}
-          className="w-full p-3 rounded-md bg-transparent border outline-none text-gray-900 dark:text-gray-100"
+          name="userType"
+          value={formData.userType}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded bg-[#434E78]"
         >
-          <option value="">Select Type</option>
-          <option value="buyer">Buyer / News User</option>
-          <option value="seller">Seller / Product Vendor</option>
+          <option value="">Select type</option>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
         </select>
-        {userTypeError && (
-          <p className="text-red-500 text-sm my-1">{userTypeError}</p>
+        {errors.userType && (
+          <p className="text-red-500 text-sm">{errors.userType}</p>
         )}
 
         <button
           type="submit"
-          className="w-full mt-4 py-3 rounded-md bg-white/40 dark:bg-black/40 text-gray-900 dark:text-gray-100 font-semibold hover:bg-white/50 dark:hover:bg-black/50 transition"
+          className="w-full mt-4 py-2 bg-black text-white rounded"
         >
           Register
         </button>
+
+        <p className="text-center mt-3">
+          Already have an account?{" "}
+          <Link to="/login" className="font-semibold">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );
