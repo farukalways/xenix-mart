@@ -1,16 +1,13 @@
 import Product from "./Product";
 import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
 import Pagination from "../../components/Pagination";
-
-import ProductDetails from "./ProductDetails";
 import useProduct from "../../hooks/useProduct";
 
 const Products = () => {
   const {
     showFilterBer,
     setShowFilterBer,
-    selectedProduct,
-    setSelectedProduct,
+    setSelectedProductId,
     error,
     products,
     setPage,
@@ -20,12 +17,7 @@ const Products = () => {
 
   return (
     <section>
-      {selectedProduct ? (
-        <ProductDetails
-          selectedProduct={selectedProduct}
-          onSelectedProduct={setSelectedProduct}
-        />
-      ) : error ? (
+      {error ? (
         <p className="text-xl text-red-500 w-full min-h-72 flex items-center justify-center">
           {error}
         </p>
@@ -44,10 +36,10 @@ const Products = () => {
             Filterd
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 min-h-[90vh] bg-[#f3fab5]">
             {products.map((product) => (
               <Product
-                onOpen={() => setSelectedProduct(product)}
+                onOpen={() => setSelectedProductId(product.id)}
                 key={product.id}
                 product={product}
               />

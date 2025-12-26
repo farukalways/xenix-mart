@@ -7,15 +7,13 @@ const ProductProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSortOption, setSelectedSortOption] = useState(null);
   const [showFilterBer, setShowFilterBer] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totleProductsCount, setTotleProductsCount] = useState(0);
   const [error, setError] = useState(null);
   const limit = 15;
   const totalPages = Math.ceil(totleProductsCount / limit);
-
-  console.log(totalPages);
 
   useEffect(() => {
     let ignore = false;
@@ -71,8 +69,8 @@ const ProductProvider = ({ children }) => {
     setSelectedSortOption,
     showFilterBer,
     setShowFilterBer,
-    selectedProduct,
-    setSelectedProduct,
+    selectedProductId,
+    setSelectedProductId,
     products,
     setPage,
     page,

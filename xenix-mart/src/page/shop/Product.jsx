@@ -4,7 +4,7 @@ const Product = ({ product, onOpen }) => {
   const dolerTotk = Math.round(120 * Number(price));
   return (
     <>
-      <div className="card p-0  text-[#000000] w-auto shadow-sm flex flex-col items-center">
+      <div className="card p-0  text-[#000000] w-auto max-h-80 shadow-sm flex flex-col items-center">
         <figure className="bg-[#E8E7EC] rounded-xl flex justify-center items-center max-w-56 max-h-48">
           <img
             src={thumbnail}

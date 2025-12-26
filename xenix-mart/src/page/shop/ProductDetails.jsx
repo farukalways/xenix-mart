@@ -1,7 +1,45 @@
-import { useState } from "react";
-import ReviewSlider from "./ReviewSlider";
+import { useEffect, useState } from "react";
+import useProduct from "../../hooks/useProduct";
+import { fetchData } from "../../utils/fetchProducts";
+// import ReviewSlider from "./ReviewSlider";
 
-const ProductDetails = ({ selectedProduct, onSelectedProduct }) => {
+const ProductDetails = () => {
+  const { selectedProductId, setSelectedProductId, setError } = useProduct();
+
+  const [productDetails, setProductDetails] = useState(null);
+
+  useEffect(() => {
+    if (!selectedProductId) return;
+
+    let isMounted = false;
+
+    const loadProduct = async () => {
+      try {
+        const product = await fetchData(
+          `http://localhost:3000/products/${selectedProductId}`
+        );
+
+        if (isMounted) {
+          if (product) {
+            setProductDetails(product);
+          } else {
+            setError("No data available");
+          }
+        }
+      } catch (error) {
+        if (isMounted) {
+          setError(error.message);
+        }
+      }
+    };
+
+    loadProduct();
+
+    return () => {
+      isMounted = true;
+    };
+  }, [selectedProductId, setError]);
+
   const {
     title,
     description,
@@ -17,20 +55,20 @@ const ProductDetails = ({ selectedProduct, onSelectedProduct }) => {
     warrantyInformation,
     shippingInformation,
     availabilityStatus,
-    reviews,
+    // reviews,
     returnPolicy,
     minimumOrderQuantity,
     meta,
     images,
     thumbnail,
-  } = selectedProduct;
+  } = productDetails;
 
   const discountedPrice = Math.round(
     price - (price * discountPercentage) / 100
   );
   const finalPriceBDT = Math.round(discountedPrice * 120);
 
-  const [qty, setQty] = useState(minimumOrderQuantity);
+  const [qty, setQty] = useState(1);
 
   return (
     <section className=" w-10/12 mx-auto text-black">
@@ -90,7 +128,7 @@ const ProductDetails = ({ selectedProduct, onSelectedProduct }) => {
           {/* QUANTITY */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => qty > minimumOrderQuantity && setQty(qty - 1)}
+              onClick={() => qty > 1 && setQty(qty - 1)}
               className="px-4 py-2 border rounded"
             >
               −
@@ -137,13 +175,13 @@ const ProductDetails = ({ selectedProduct, onSelectedProduct }) => {
       </div>
 
       {/* REVIEWS */}
-      <div>
+      {/* <div>
         <h2 className="text-xl font-semibold mb-4">Customer Reviews</h2>
 
         <ReviewSlider reviews={reviews} />
-      </div>
+      </div> */}
 
-      <button onClick={() => onSelectedProduct(null)}>Back</button>
+      <button onClick={() => setSelectedProductId(null)}>Back</button>
     </section>
   );
 };

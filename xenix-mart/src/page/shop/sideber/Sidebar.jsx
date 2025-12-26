@@ -19,7 +19,7 @@ const Sidebar = () => {
     <aside
       className={`
      
-    bg-yellow-300 p-4 h-screen
+    bg-[#f3ff86e3] p-4 h-screen
     fixed inset-0 z-50
     ${showFilterBer ? "block w-3/5 " : "hidden"}
     ${
