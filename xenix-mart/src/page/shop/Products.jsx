@@ -1,4 +1,4 @@
-import Product from "./Product";
+import ProductCart from "./ProductCart";
 import ProductLoadingAnimation from "../../components/ProductLoadingAnimation";
 import Pagination from "../../components/Pagination";
 import useProduct from "../../hooks/useProduct";
@@ -7,7 +7,7 @@ const Products = () => {
   const {
     showFilterBer,
     setShowFilterBer,
-    setSelectedProductId,
+    setSelectedProduct,
     error,
     products,
     setPage,
@@ -38,8 +38,8 @@ const Products = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5 min-h-[90vh] bg-[#f3fab5]">
             {products.map((product) => (
-              <Product
-                onOpen={() => setSelectedProductId(product.id)}
+              <ProductCart
+                onOpen={() => setSelectedProduct(product)}
                 key={product.id}
                 product={product}
               />

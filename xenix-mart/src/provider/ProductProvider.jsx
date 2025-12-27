@@ -7,7 +7,6 @@ const ProductProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSortOption, setSelectedSortOption] = useState(null);
   const [showFilterBer, setShowFilterBer] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState(null);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totleProductsCount, setTotleProductsCount] = useState(0);
@@ -69,8 +68,6 @@ const ProductProvider = ({ children }) => {
     setSelectedSortOption,
     showFilterBer,
     setShowFilterBer,
-    selectedProductId,
-    setSelectedProductId,
     products,
     setPage,
     page,

@@ -1,5 +1,9 @@
-const Product = ({ product, onOpen }) => {
+import { useNavigate } from "react-router";
+
+const ProductCart = ({ product }) => {
   const { title, price, thumbnail } = product;
+
+  const navigate = useNavigate();
 
   const dolerTotk = Math.round(120 * Number(price));
   return (
@@ -25,7 +29,7 @@ const Product = ({ product, onOpen }) => {
           </div>
 
           <div>
-            <button onClick={onOpen} className="relative btn-slide  text-sm  ">
+            <button onClick={() => navigate(`/shop/${product.id}`)}>
               CHOOSE OPTION
             </button>
           </div>
@@ -34,4 +38,4 @@ const Product = ({ product, onOpen }) => {
     </>
   );
 };
-export default Product;
+export default ProductCart;

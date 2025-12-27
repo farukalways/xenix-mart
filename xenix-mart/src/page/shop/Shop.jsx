@@ -1,22 +1,23 @@
-import Products from "./Products";
+import { Outlet, useParams } from "react-router";
 import Sidebar from "./sideber/Sidebar";
-import useProduct from "../../hooks/useProduct";
+import Products from "./Products";
 
 const Shop = () => {
-  const { selectedProduct } = useProduct();
+  const { id } = useParams();
+  const isDetailsPage = Boolean(id);
+
   return (
     <section className="flex min-h-screen">
-      {/* Sidebar */}
-      <Sidebar />
-      {/* Main Content */}
+      {!isDetailsPage && <Sidebar />}
+
       <main
         className={
-          selectedProduct
-            ? "w-full"
+          isDetailsPage
+            ? "w-full bg-white p-4"
             : "w-full md:w-4/5 bg-white p-4 overflow-y-auto"
         }
       >
-        <Products />
+        {isDetailsPage ? <Outlet /> : <Products />}
       </main>
     </section>
   );

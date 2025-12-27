@@ -1,44 +1,23 @@
 import { useEffect, useState } from "react";
-import useProduct from "../../hooks/useProduct";
-import { fetchData } from "../../utils/fetchProducts";
+import { useNavigate, useParams } from "react-router";
 // import ReviewSlider from "./ReviewSlider";
 
 const ProductDetails = () => {
-  const { selectedProductId, setSelectedProductId, setError } = useProduct();
+  const { id } = useParams();
+  const nagigate = useNavigate();
+  const [qty, setQty] = useState(1);
 
-  const [productDetails, setProductDetails] = useState(null);
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    if (!selectedProductId) return;
+    fetch(`http://localhost:3000/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => setProduct(data));
+  }, [id]);
 
-    let isMounted = false;
+  if (!product) return <p>Loading...</p>;
 
-    const loadProduct = async () => {
-      try {
-        const product = await fetchData(
-          `http://localhost:3000/products/${selectedProductId}`
-        );
-
-        if (isMounted) {
-          if (product) {
-            setProductDetails(product);
-          } else {
-            setError("No data available");
-          }
-        }
-      } catch (error) {
-        if (isMounted) {
-          setError(error.message);
-        }
-      }
-    };
-
-    loadProduct();
-
-    return () => {
-      isMounted = true;
-    };
-  }, [selectedProductId, setError]);
+  if (!product) return <p>Product not found</p>;
 
   const {
     title,
@@ -61,14 +40,12 @@ const ProductDetails = () => {
     meta,
     images,
     thumbnail,
-  } = productDetails;
+  } = product;
 
   const discountedPrice = Math.round(
     price - (price * discountPercentage) / 100
   );
   const finalPriceBDT = Math.round(discountedPrice * 120);
-
-  const [qty, setQty] = useState(1);
 
   return (
     <section className=" w-10/12 mx-auto text-black">
@@ -181,7 +158,7 @@ const ProductDetails = () => {
         <ReviewSlider reviews={reviews} />
       </div> */}
 
-      <button onClick={() => setSelectedProductId(null)}>Back</button>
+      <button onClick={() => nagigate(-1)}>Back</button>
     </section>
   );
 };

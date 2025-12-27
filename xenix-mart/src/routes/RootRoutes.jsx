@@ -7,6 +7,7 @@ import Features from "../page/features/Features";
 import Login from "../forms/Login";
 import Register from "../forms/Registration";
 import ProductAddForm from "../forms/ProductAddForm";
+import ProductDetails from "../page/shop/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,12 @@ export const router = createBrowserRouter([
       {
         path: "shop",
         Component: Shop,
+        children: [
+          {
+            path: ":id",
+            Component: ProductDetails,
+          },
+        ],
       },
       {
         path: "about",
