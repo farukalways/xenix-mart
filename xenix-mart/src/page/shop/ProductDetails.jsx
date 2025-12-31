@@ -49,9 +49,7 @@ const ProductDetails = () => {
 
   return (
     <section className=" w-10/12 mx-auto text-black">
-      {/* TOP SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* LEFT */}
         <div className="flex flex-col items-center gap-4">
           <img
             src={images?.[0] || thumbnail}
@@ -67,7 +65,6 @@ const ProductDetails = () => {
           <p className="text-sm text-gray-500">Barcode: {meta.barcode}</p>
         </div>
 
-        {/* RIGHT */}
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">{title}</h1>
 
@@ -102,7 +99,6 @@ const ProductDetails = () => {
             </span>
           </p>
 
-          {/* QUANTITY */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => qty > 1 && setQty(qty - 1)}
